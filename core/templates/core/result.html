@@ -1,0 +1,13 @@
+<h2>Quiz Result</h2>
+
+{% if score is not None %}
+    <p><strong>Your Score:</strong> {{ score }}%</p>
+{% else %}
+    <p>Score not available.</p>
+{% endif %}
+
+<hr>
+
+<a href="{% url 'review_quiz' quiz.id %}">🔍 Review Answers</a><br>
+<a href="{% url 'leaderboard' quiz.id %}">🏆 View Leaderboard for {{ quiz.name }}</a><br>
+<a href="{% url 'home' %}">🏠 Back to Home</a>

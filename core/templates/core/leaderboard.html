@@ -1,0 +1,24 @@
+<h2>Leaderboard - {{ quiz.name }}</h2>
+
+{% if top_scores %}
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Rank</th>
+        <th>User</th>
+        <th>Score (%)</th>
+        <th>Date</th>
+    </tr>
+    {% for result in top_scores %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ result.user.username }}</td>
+        <td>{{ result.score }}</td>
+        <td>{{ result.completed_on|date:"M d, Y H:i" }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+    <p>No results yet for this quiz.</p>
+{% endif %}
+
+<a href="/">Back to Home</a>

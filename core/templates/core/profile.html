@@ -1,0 +1,27 @@
+<h2>{{ user.username }}'s Quiz Profile</h2>
+
+<p><strong>Total Tests Taken:</strong> {{ total_tests }}</p>
+<p><strong>Average Score:</strong> {{ average_score }}%</p>
+
+<hr>
+
+<h3>Quiz Results</h3>
+{% if results %}
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Quiz</th>
+        <th>Score (%)</th>
+        <th>Date</th>
+    </tr>
+    {% for result in results %}
+    <tr>
+        <td>{{ result.quiz.name }}</td>
+        <td>{{ result.score }}</td>
+        <td>{{ result.completed_on|date:"M d, Y H:i" }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+    <p>No quizzes taken yet.</p>
+{% endif %}
+<a href="/">Back to Home</a>

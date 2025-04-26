@@ -1,0 +1,26 @@
+{% load custom_filters %}
+
+<h2>Review Answers for {{ quiz.name }}</h2>
+
+{% for question in questions %}
+    <div style="margin-bottom: 20px;">
+        <strong>{{ forloop.counter }}. {{ question.text }}</strong><br>
+        {% for choice in question.choice_set.all %}
+            {% with answer=answer_dict|get_item:question.id %}
+                {% if choice.id == answer.selected_choice.id %}
+                    {% if answer.is_correct %}
+                        <span style="color:green;">✔ {{ choice.text }} (Your Answer, Correct)</span><br>
+                    {% else %}
+                        <span style="color:red;">✖ {{ choice.text }} (Your Answer, Incorrect)</span><br>
+                    {% endif %}
+                {% elif choice.is_correct %}
+                    <span style="color:blue;">✔ {{ choice.text }} (Correct Answer)</span><br>
+                {% else %}
+                    {{ choice.text }}<br>
+                {% endif %}
+            {% endwith %}
+        {% endfor %}
+    </div>
+{% endfor %}
+
+<a href="{% url 'home' %}">🏠 Back to Home</a>
