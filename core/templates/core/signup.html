@@ -1,7 +1,67 @@
-<h2>Sign Up</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Register</button>
-</form>
-<a href="{% url 'login' %}">Already have an account? Log in</a>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #e9f7ef; /* Light green background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .signup-box {
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .btn-signup {
+            background-color: #28a745; /* Green color */
+            color: white;
+        }
+
+        .btn-signup:hover {
+            background-color: #218838;
+        }
+
+        a {
+            display: block;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="signup-box">
+    <h2><i class="fas fa-user-plus"></i> Sign Up</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="btn btn-signup btn-block">Register</button>
+    </form>
+
+    <a href="{% url 'login' %}">Already have an account? Log in</a>
+</div>
+
+<!-- Font Awesome (for icons) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+
+</body>
+</html>

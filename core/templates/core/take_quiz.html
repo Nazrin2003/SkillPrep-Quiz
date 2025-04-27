@@ -1,16 +1,76 @@
-<h2>Quiz: {{ quiz.name }}</h2>
-<form method="post">
-    {% csrf_token %}
-    {% for question in questions %}
-        <div style="margin-bottom: 20px;">
-            <strong>{{ forloop.counter }}. {{ question.text }}</strong><br>
-            {% for choice in question.choice_set.all %}
-                <label>
-                    <input type="radio" name="{{ question.id }}" value="{{ choice.id }}">
-                    {{ choice.text }}
-                </label><br>
-            {% endfor %}
-        </div>
-    {% endfor %}
-    <button type="submit">Submit Quiz</button>
-</form>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Take Quiz</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Google Fonts fallback if Berlin Sans FB not available -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #e6f7ff; /* Light pastel blue */
+            padding-top: 50px;
+            font-family: 'Poppins', sans-serif;
+        }
+        h2 {
+            font-family: 'Berlin Sans FB', 'Poppins', sans-serif;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            color: #003366;
+        }
+        .question-box {
+            background-color: #ffffff;
+            padding: 20px 25px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            color: #333;
+        }
+        .submit-btn {
+            display: block;
+            margin: 30px auto;
+            padding: 10px 30px;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Quiz: {{ quiz.name }}</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {% for question in questions %}
+            <div class="question-box">
+                <div class="question-text">
+                    {{ forloop.counter }}. {{ question.text }}
+                </div>
+                {% for choice in question.choice_set.all %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="{{ question.id }}" id="choice{{ choice.id }}" value="{{ choice.id }}">
+                        <label class="form-check-label" for="choice{{ choice.id }}">
+                            {{ choice.text }}
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-success submit-btn">Submit Quiz</button>
+    </form>
+
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

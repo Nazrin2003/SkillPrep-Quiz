@@ -1,26 +1,125 @@
 {% load custom_filters %}
 
-<h2>Review Answers for {{ quiz.name }}</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Review Answers for {{ quiz.name }}</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Google Fonts fallback if Berlin Sans FB not available -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #fff8e1; /* Soft yellow background */
+            padding-top: 50px;
+            font-family: 'Poppins', sans-serif;
+            padding-bottom: 50px;
+        }
 
-{% for question in questions %}
-    <div style="margin-bottom: 20px;">
-        <strong>{{ forloop.counter }}. {{ question.text }}</strong><br>
-        {% for choice in question.choice_set.all %}
-            {% with answer=answer_dict|get_item:question.id %}
-                {% if choice.id == answer.selected_choice.id %}
-                    {% if answer.is_correct %}
-                        <span style="color:green;">✔ {{ choice.text }} (Your Answer, Correct)</span><br>
+        h2 {
+            font-family: 'Berlin Sans FB', 'Poppins', sans-serif;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            color: #003366;
+        }
+
+        .question-box {
+            background-color: #ffffff;
+            padding: 20px 25px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .answer-correct {
+            color: green;
+        }
+
+        .answer-incorrect {
+            color: red;
+        }
+
+        .answer-default {
+            color: #555;
+        }
+
+        .answer-correct-label {
+            color: blue;
+        }
+
+        .submit-btn {
+            display: block;
+            margin: 30px auto;
+            padding: 10px 30px;
+            font-size: 1.2rem;
+        }
+
+        .back-btn {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .back-btn a {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .back-btn a:hover {
+            background-color: #0056b3;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Review Answers for {{ quiz.name }}</h2>
+
+    {% for question in questions %}
+        <div class="question-box">
+            <div class="question-text">
+                <strong>{{ forloop.counter }}. {{ question.text }}</strong>
+            </div>
+            {% for choice in question.choice_set.all %}
+                {% with answer=answer_dict|get_item:question.id %}
+                    {% if choice.id == answer.selected_choice.id %}
+                        {% if answer.is_correct %}
+                            <span class="answer-correct">✔ {{ choice.text }} (Your Answer, Correct)</span><br>
+                        {% else %}
+                            <span class="answer-incorrect">✖ {{ choice.text }} (Your Answer, Incorrect)</span><br>
+                        {% endif %}
+                    {% elif choice.is_correct %}
+                        <span class="answer-correct-label">✔ {{ choice.text }} (Correct Answer)</span><br>
                     {% else %}
-                        <span style="color:red;">✖ {{ choice.text }} (Your Answer, Incorrect)</span><br>
+                        <span class="answer-default">{{ choice.text }}</span><br>
                     {% endif %}
-                {% elif choice.is_correct %}
-                    <span style="color:blue;">✔ {{ choice.text }} (Correct Answer)</span><br>
-                {% else %}
-                    {{ choice.text }}<br>
-                {% endif %}
-            {% endwith %}
-        {% endfor %}
-    </div>
-{% endfor %}
+                {% endwith %}
+            {% endfor %}
+        </div>
+    {% endfor %}
 
-<a href="{% url 'home' %}">🏠 Back to Home</a>
+    <div class="back-btn">
+        <a href="{% url 'home' %}">🏠 Back to Home</a>
+    </div>
+
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

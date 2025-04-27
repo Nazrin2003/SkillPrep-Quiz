@@ -1,9 +1,79 @@
-<h2>Login</h2>
-{% if error %}<p style="color:red">{{ error }}</p>{% endif %}
-<form method="post">
-    {% csrf_token %}
-    Username: <input type="text" name="username"><br>
-    Password: <input type="password" name="password"><br>
-    <button type="submit">Login</button>
-</form>
-<a href="{% url 'signup' %}">Don't have an account? Sign up</a>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f0f4f8; /* Light bluish background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-box {
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .btn-login {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-login:hover {
+            background-color: #0056b3;
+        }
+
+        a {
+            display: block;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-box">
+    <h2><i class="fas fa-user-lock"></i> Login</h2>
+
+    {% if error %}
+        <p class="text-danger text-center">{{ error }}</p>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" name="username" class="form-control" id="username" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" class="form-control" id="password" required>
+        </div>
+
+        <button type="submit" class="btn btn-login btn-block">Login</button>
+    </form>
+
+    <a href="{% url 'signup' %}">Don't have an account? Sign up</a>
+</div>
+
+<!-- Font Awesome (for icons, optional) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+
+</body>
+</html>

@@ -1,24 +1,88 @@
-<h2>Leaderboard - {{ quiz.name }}</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - {{ quiz.name }}</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        h2{
+        font-family: 'Berlin Sans FB', 'Poppins', sans-serif;
+        font-size: -webkit-xxx-large;
+        }
+        /* Custom styling for the leaderboard page */
+        .leaderboard-container {
+            margin-top: 50px;
+            padding: 20px;
+        }
 
-{% if top_scores %}
-<table border="1" cellpadding="10">
-    <tr>
-        <th>Rank</th>
-        <th>User</th>
-        <th>Score (%)</th>
-        <th>Date</th>
-    </tr>
-    {% for result in top_scores %}
-    <tr>
-        <td>{{ forloop.counter }}</td>
-        <td>{{ result.user.username }}</td>
-        <td>{{ result.score }}</td>
-        <td>{{ result.completed_on|date:"M d, Y H:i" }}</td>
-    </tr>
-    {% endfor %}
-</table>
-{% else %}
-    <p>No results yet for this quiz.</p>
-{% endif %}
+        .leaderboard-table {
+            margin-top: 20px;
+            width: 100%;
+        }
 
-<a href="/">Back to Home</a>
+        .leaderboard-table th, .leaderboard-table td {
+            text-align: center;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+
+        .no-results {
+            font-size: 18px;
+            font-weight: bold;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container leaderboard-container">
+        <h2 class="text-center">Leaderboard - {{ quiz.name }}</h2>
+
+        {% if top_scores %}
+            <table class="table table-bordered leaderboard-table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Rank</th>
+                        <th>User</th>
+                        <th>Score (%)</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in top_scores %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ result.user.username }}</td>
+                            <td>{{ result.score }}</td>
+                            <td>{{ result.completed_on|date:"M d, Y H:i" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="no-results">No results yet for this quiz.</p>
+        {% endif %}
+
+        <a href="/" class="back-button">Back to Home</a>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

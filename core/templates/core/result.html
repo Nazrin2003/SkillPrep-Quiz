@@ -1,13 +1,91 @@
-<h2>Quiz Result</h2>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz Result</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f4f8; /* Light background */
+            padding-top: 50px;
+            font-family: 'Poppins', sans-serif;
+        }
 
-{% if score is not None %}
-    <p><strong>Your Score:</strong> {{ score }}%</p>
-{% else %}
-    <p>Score not available.</p>
-{% endif %}
+        h2 {
+            font-family: 'Berlin Sans FB', 'Poppins', sans-serif;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            color: #003366;
+        }
 
-<hr>
+        .container {
+            background-color: #ffffff; /* White background for the result container */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: auto;
+        }
 
-<a href="{% url 'review_quiz' quiz.id %}">🔍 Review Answers</a><br>
-<a href="{% url 'leaderboard' quiz.id %}">🏆 View Leaderboard for {{ quiz.name }}</a><br>
-<a href="{% url 'home' %}">🏠 Back to Home</a>
+        .score {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            width: 100%;
+            margin: 10px 0;
+            font-size: 1.1rem;
+        }
+
+        .btn-review {
+            background-color: #ffcc00; /* Yellow background for Review */
+            color: #333;
+        }
+
+        .btn-leaderboard {
+            background-color: #28a745; /* Green background for Leaderboard */
+            color: white;
+        }
+
+        .btn-home {
+            background-color: #007bff; /* Blue background for Home */
+            color: white;
+        }
+
+        hr {
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Quiz Result</h2>
+
+    <div class="score">
+        {% if score is not None %}
+            <p><strong>Your Score:</strong> {{ score }}%</p>
+        {% else %}
+            <p>Score not available.</p>
+        {% endif %}
+    </div>
+
+    <hr>
+
+    <a href="{% url 'review_quiz' quiz.id %}" class="btn btn-review">🔍 Review Answers</a>
+    <a href="{% url 'leaderboard' quiz.id %}" class="btn btn-leaderboard">🏆 View Leaderboard for {{ quiz.name }}</a>
+    <a href="{% url 'home' %}" class="btn btn-home">🏠 Back to Home</a>
+
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

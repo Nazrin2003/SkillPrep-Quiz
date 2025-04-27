@@ -4,3 +4,10 @@ db.sqlite3
 /static/
 *.env
 *.log
+
+
+#Stage your changes: git add .
+#
+#Commit your changes: git commit -m "Description of changes"
+#
+#Push to GitHub: git push
