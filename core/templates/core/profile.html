@@ -1,104 +1,146 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{{ user.username }}'s Profile</title>
-    <!-- Bootstrap CSS -->
+
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Google Fonts fallback -->
+
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         body {
-            background-color: #f0f4f8; /* Light pastel grey-blue */
+            background-color: #f4f5fa;
             font-family: 'Poppins', sans-serif;
+            margin: 0;
             padding-top: 50px;
+            color: #333;
         }
 
         .profile-container {
-            background-color: #ffffff;
-            padding: 40px 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(72, 76, 122, 0.1);
+            max-width: 900px;
             margin: auto;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .profile-container:hover {
+            box-shadow: 0 25px 55px rgba(72, 76, 122, 0.2);
         }
 
         h2 {
-            font-family: 'Berlin Sans FB', 'Poppins', sans-serif;
+            color: #484c7a;
+            font-size: 2.5rem;
             text-align: center;
             margin-bottom: 30px;
-            color: #003366;
-            font-size: 2.5rem;
         }
 
         p {
             font-size: 1.1rem;
-            color: #555;
+            color: #444;
         }
 
         hr {
-            border-top: 2px solid #ddd;
+            border-top: 3px solid #484c7a;
             margin: 30px 0;
         }
 
         h3 {
-            text-align: center;
-            color: #444;
+            font-size: 1.6rem;
+            color: #484c7a;
+            font-weight: 600;
+            margin-top: 30px;
             margin-bottom: 20px;
+            text-align: center;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
         }
 
         th {
-            background-color: #007bff;
+            background-color: #484c7a;
             color: white;
-            text-align: center;
             padding: 12px;
+            text-align: center;
             font-size: 1rem;
         }
 
         td {
+            padding: 12px;
             text-align: center;
-            padding: 10px;
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: #333;
         }
 
         tr:nth-child(even) {
-            background-color: #f2f2f2;
+            background-color: #f8f8ff;
         }
 
         .no-results {
-            text-align: center;
             font-size: 1.1rem;
-            color: #777;
+            color: #888;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        canvas {
+            margin: 30px auto;
+            display: block;
+            max-width: 100%;
+            border-radius: 10px;
         }
 
         .back-btn {
             display: flex;
             justify-content: center;
-            margin-top: 30px;
+            margin-top: 40px;
         }
 
         .back-btn a {
-            background-color: #28a745;
+            background-color: #484c7a;
             color: white;
-            padding: 10px 25px;
-            border-radius: 6px;
-            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 25px;
             font-size: 1.1rem;
+            text-decoration: none;
+            font-weight: 500;
+            box-shadow: 0 6px 15px rgba(72, 76, 122, 0.2);
+            transition: background-color 0.3s ease;
         }
 
         .back-btn a:hover {
-            background-color: #218838;
-            text-decoration: none;
+            background-color: #5e6191;
+        }
+
+        @media (max-width: 768px) {
+            .profile-container {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            th, td {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+
+            .back-btn a {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
@@ -136,8 +178,63 @@
                 </tbody>
             </table>
         </div>
+
+        <h3>📈 Your Progress</h3>
+        <canvas id="progressChart" height="150"></canvas>
+
+        <script>
+            const ctx = document.getElementById('progressChart').getContext('2d');
+            const progressChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: {{ chart_labels|safe }},
+                    datasets: [{
+                        label: 'Quiz Scores (%)',
+                        data: {{ chart_data|safe }},
+                        borderColor: 'rgba(72, 76, 122, 1)',
+                        backgroundColor: 'rgba(72, 76, 122, 0.2)',
+                        fill: true,
+                        tension: 0.3,
+                        pointBackgroundColor: '#484c7a',
+                        pointRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: {
+                                color: '#333'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                color: '#333'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#333'
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+
     {% else %}
         <p class="no-results">No quizzes taken yet.</p>
     {% endif %}
 
-    <div class="back
+    <div class="back-btn">
+        <a href="{% url 'home' %}">← Back to Home</a>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Global Leaderboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f2f3f8;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 30px;
+            color: #333;
+        }
+
+        h2 {
+            text-align: center;
+            color: #484c7a;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(72, 76, 122, 0.1);
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            font-size: 1.05rem;
+        }
+
+        th {
+            background-color: #484c7a;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9fb;
+        }
+
+        tr:hover {
+            background-color: #f0f0ff;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px 0 0;
+            gap: 20px;
+            font-size: 1rem;
+        }
+
+        .pagination a {
+            background-color: #484c7a;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .pagination a:hover {
+            background-color: #5e6299;
+        }
+
+        .pagination span {
+            color: #484c7a;
+            font-weight: 600;
+        }
+
+        .back-home {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back-home a {
+            background-color: #d6d6e7;
+            color: #333;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(72, 76, 122, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .back-home a:hover {
+            background-color: #c4c4d8;
+        }
+
+        @media (max-width: 768px) {
+            th, td {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .pagination {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>🌍 Global Leaderboard</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>User</th>
+                <th>Average Score (%)</th>
+                <th>Tests Taken</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.avg_score|floatformat:2 }}</td>
+                <td>{{ user.quiz_count }}</td>
+            </tr>
+            {% endfor %}
+            {% for user in page_obj %}
+            <!-- leaderboard row here -->
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">⬅ Previous</a>
+        {% endif %}
+
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Next ➡</a>
+        {% endif %}
+    </div>
+
+    <div class="back-home">
+        <a href="{% url 'home' %}">🏠 Back to Home</a>
+    </div>
+
+</body>
+</html>

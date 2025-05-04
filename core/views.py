@@ -100,16 +100,25 @@ def logout_view(request):
     logout(request)
     return redirect('home')
 
+from django.db.models import Avg
+from django.utils.dateformat import DateFormat
+
 @login_required
 def profile_view(request):
     results = UserQuizResult.objects.filter(user=request.user).select_related('quiz')
     total_tests = results.count()
-    average_score = results.aggregate(models.Avg('score'))['score__avg']
+    average_score = results.aggregate(Avg('score'))['score__avg'] or 0
+
+    # 🟦 Prepare data for chart
+    chart_labels = [DateFormat(r.completed_on).format('M d') for r in results.order_by('completed_on')]
+    chart_data = [round(r.score, 2) for r in results.order_by('completed_on')]
 
     return render(request, 'core/profile.html', {
         'results': results,
         'total_tests': total_tests,
-        'average_score': round(average_score, 2)
+        'average_score': round(average_score, 2),
+        'chart_labels': chart_labels,
+        'chart_data': chart_data,
     })
 
 
@@ -136,3 +145,28 @@ def review_quiz(request, quiz_id):
         'answer_dict': answer_dict
     })
 
+from django.contrib.auth.models import User
+from django.db.models import Avg, Count
+from django.core.paginator import Paginator
+
+def global_leaderboard_view(request):
+    users = User.objects.annotate(
+        avg_score=Avg('userquizresult__score'),
+        quiz_count=Count('userquizresult')
+    ).filter(quiz_count__gt=0).order_by('-avg_score')
+
+    paginator = Paginator(users, 10)  # Show 10 users per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'core/global_leaderboard.html', {
+        'page_obj': page_obj
+    })
+
+from datetime import datetime
+
+def home_view(request):
+    return render(request, 'core/home.html', {
+        'topics': Topic.objects.all(),
+        'year': datetime.now().year
+    })

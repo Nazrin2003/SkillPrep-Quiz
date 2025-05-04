@@ -37,4 +37,3 @@ admin.site.register(Quiz)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(UserQuizResult)
 
-

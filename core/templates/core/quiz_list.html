@@ -1,53 +1,101 @@
+{% extends 'core/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Quizzes</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body {
-            background-color: #f0f2f5;
-            padding-top: 40px;
-        }
-        .quiz-box {
-            background-color: #fff;
-            padding: 20px 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-            margin-bottom: 20px;
-        }
-        .quiz-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: #343a40;
-        }
-        .btn-leaderboard {
-            float: right;
-        }
-    </style>
-</head>
-<body>
 
-<div class="container">
-    <h2 class="mb-4 text-center">Quizzes under <strong>{{ topic.name }}</strong></h2>
+{% block title %}Quizzes for {{ topic.name }}{% endblock %}
 
-    {% for quiz in quizzes %}
-        <div class="quiz-box">
-            <a href="{% url 'take_quiz' quiz.id %}" class="quiz-title">{{ quiz.name }}</a>
-            <a href="{% url 'leaderboard' quiz.id %}" class="btn btn-outline-primary btn-sm btn-leaderboard">Leaderboard</a>
-        </div>
-    {% empty %}
-        <p>No quizzes found under this topic.</p>
-    {% endfor %}
+{% block extra_css %}
+<style>
+    .hero-section {
+        background-color: #777aaf;
+        padding: 4rem 1rem;
+        color: white;
+        text-align: center;
+    }
 
-    <div class="text-center mt-4">
-        <a href="/" class="btn btn-secondary">Back to Home</a>
-    </div>
+    .hero-section h2 {
+        font-size: 2.5rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .hero-section p {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+
+    .quiz-card {
+        background-color: #f9f9fc;
+        border: 1px solid #e0e0ef;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s ease;
+    }
+
+    .quiz-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .quiz-title {
+        color: #36395a;
+        font-size: 1.25rem;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .btn-leaderboard {
+        margin-top: 1rem;
+        background-color: transparent;
+        border: 1px solid #777aaf;
+        color: #777aaf;
+        border-radius: 25px;
+        font-size: 0.9rem;
+    }
+
+    .btn-leaderboard:hover {
+        background-color: #777aaf;
+        color: white;
+    }
+
+    .back-btn {
+        background-color: #36395a;
+        color: white;
+        border-radius: 25px;
+        padding: 0.6rem 2rem;
+        margin-top: 2rem;
+    }
+
+    .back-btn:hover {
+        background-color: #2f314f;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section">
+    <h2>Explore Quizzes in {{ topic.name }}</h2>
+    <p>Sharpen your skills and challenge yourself with topic-specific quizzes.</p>
 </div>
 
-<!-- Bootstrap JS -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+<!-- Quiz List -->
+<div class="container my-5">
+    {% for quiz in quizzes %}
+    <div class="quiz-card">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+            <a href="{% url 'take_quiz' quiz.id %}" class="quiz-title">{{ quiz.name }}</a>
+            <a href="{% url 'leaderboard' quiz.id %}" class="btn btn-leaderboard">Leaderboard</a>
+        </div>
+    </div>
+    {% empty %}
+    <div class="alert alert-warning text-center" role="alert">
+        No quizzes found under this topic. Please check back later.
+    </div>
+    {% endfor %}
+
+    <div class="text-center">
+        <a href="{% url 'home' %}" class="btn back-btn">← Back to Home</a>
+    </div>
+</div>
+{% endblock %}

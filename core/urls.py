@@ -11,5 +11,6 @@ urlpatterns = [
     path('profile/', views.profile_view, name='profile'),
     path('leaderboard/<int:quiz_id>/', views.leaderboard_view, name='leaderboard'),
     path('review/<int:quiz_id>/', views.review_quiz, name='review_quiz'),
+    path('leaderboard/global/', views.global_leaderboard_view, name='global_leaderboard'),
 
 ]
